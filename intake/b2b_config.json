@@ -1,0 +1,114 @@
+{
+  "hero_statistics": [
+    {
+      "number": "98%",
+      "label": "Customer Satisfaction"
+    },
+    {
+      "number": "24/7",
+      "label": "Lead Capture"
+    },
+    {
+      "number": "500+",
+      "label": "Conversations Automated"
+    }
+  ],
+  "trust_badges": [
+    "AI-Powered Technology",
+    "Easy Integration",
+    "No Coding Required"
+  ],
+  "services": [
+    {
+      "name": "AI Chatbot Setup",
+      "icon": "robot",
+      "description": "Custom chatbot designed for your business needs",
+      "features": [
+        "Personalized conversation flows",
+        "Brand voice customization",
+        "Multi-channel deployment",
+        "Smart intent recognition"
+      ]
+    },
+    {
+      "name": "Lead Capture Automation",
+      "icon": "filter",
+      "description": "Never miss a potential customer inquiry",
+      "features": [
+        "Instant response to inquiries",
+        "Contact information collection",
+        "Lead qualification scoring",
+        "Automatic lead routing"
+      ]
+    },
+    {
+      "name": "Appointment Scheduling",
+      "icon": "calendar",
+      "description": "Let customers book 24/7 without human intervention",
+      "features": [
+        "Calendar integration",
+        "Automated reminders",
+        "Timezone handling",
+        "Rescheduling support"
+      ]
+    },
+    {
+      "name": "FAQ Automation",
+      "icon": "help-circle",
+      "description": "Answer common questions instantly",
+      "features": [
+        "Knowledge base integration",
+        "Natural language understanding",
+        "Continuous learning",
+        "Multi-language support"
+      ]
+    },
+    {
+      "name": "CRM Integration",
+      "icon": "plug",
+      "description": "Seamlessly connect with your existing tools",
+      "features": [
+        "Zapier integration",
+        "HubSpot compatible",
+        "Salesforce ready",
+        "Custom API connections"
+      ]
+    },
+    {
+      "name": "Ongoing Support",
+      "icon": "headphones",
+      "description": "Monthly optimization and maintenance",
+      "features": [
+        "Performance analytics",
+        "Monthly optimization",
+        "A/B testing",
+        "Dedicated support"
+      ]
+    }
+  ],
+  "process_steps": [
+    {
+      "number": 1,
+      "title": "Discovery Call",
+      "description": "We discuss your business needs, current challenges, and how an AI chatbot can help capture more leads"
+    },
+    {
+      "number": 2,
+      "title": "Custom Setup",
+      "description": "Our team builds and configures your chatbot, integrating it with your website and existing tools"
+    },
+    {
+      "number": 3,
+      "title": "Go Live & Optimize",
+      "description": "Your chatbot goes live 24/7, and we continuously improve its performance based on real conversations"
+    }
+  ],
+  "cta_configuration": {
+    "primary_button_text": "Book Your Free Discovery Call",
+    "final_cta_headline": "Ready to Automate Your Lead Capture?"
+  },
+  "company": {
+    "name": "Dialogix",
+    "tagline": "AI-Powered Chatbots for Small Business"
+  }
+}

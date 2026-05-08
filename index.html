@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogix Virtual Chatbots - AI-Powered Lead Capture for Small Businesses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1e3a5f; --primary-dark: #0f172a; --secondary: #0ea5e9;
+            --accent: #10b981; --text-dark: #1e293b; --text-light: #64748b; --bg-light: #f8fafc;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; color: var(--text-dark); background: #ffffff; overflow-x: hidden;
+        }
+        .progress-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(30, 58, 95, 0.1); z-index: 10000;
+        }
+        .progress-bar {
+            height: 100%; background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
+            width: 0%; transition: width 0.1s ease;
+        }
+        .circular-progress {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: white; border-radius: 50%; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex; align-items: center; justify-content: center; z-index: 9999;
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        .circular-progress:hover { transform: scale(1.1); }
+        .circular-progress svg { transform: rotate(-90deg); }
+        .circular-progress circle { fill: none; stroke-width: 4; }
+        .circular-progress .bg { stroke: #e2e8f0; }
+        .circular-progress .progress { stroke: var(--secondary); stroke-linecap: round; transition: stroke-dashoffset 0.3s ease; }
+        .circular-progress .percentage { position: absolute; font-size: 0.75rem; font-weight: 700; color: var(--primary); }
+        .particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .particle { position: absolute; width: 6px; height: 6px; background: rgba(14,165,233,0.3); border-radius: 50%; animation: float 20s infinite ease-in-out; }
+        @keyframes float {
+            0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            25% { transform: translateY(-30px) translateX(10px); opacity: 0.6; }
+            50% { transform: translateY(-20px) translateX(-10px); opacity: 0.4; }
+            75% { transform: translateY(-40px) translateX(5px); opacity: 0.5; }
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); color: white;
+            padding: 100px 0 80px; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.5;
+        }
+        .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-text h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s ease forwards; }
+        .hero-text .tagline { font-size: 1.25rem; color: #94a3b8; margin-bottom: 30px; opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s ease 0.2s forwards; }
+        .hero-cta { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s ease 0.4s forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .video-container {
+            position: relative; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s ease; opacity: 0; animation: fadeIn 1s ease 0.6s forwards;
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .video-container:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+        .video-placeholder {
+            width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;
+        }
+        .video-placeholder::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(14,165,233,0.2) 0%, rgba(16,185,129,0.2) 100%);
+        }
+        .video-bg-pattern {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(14,165,233,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(16,185,129,0.15) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(99,102,241,0.1) 0%, transparent 50%);
+        }
+        .play-button {
+            width: 90px; height: 90px; background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(14,165,233,0.5);
+        }
+        .play-button::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; animation: pulse 2s infinite; z-index: -1; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        .play-button:hover { transform: scale(1.1); box-shadow: 0 15px 50px rgba(14,165,233,0.6); }
+        .play-button svg { width: 30px; height: 30px; fill: white; margin-left: 5px; }
+        .video-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 30px; font-size: 0.85rem; color: white; z-index: 2; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px; }
+        .stat-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+        .stat-card.visible { opacity: 1; transform: translateY(0); }
+        .stat-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .stat-number { font-size: 2.5rem; font-weight: 800; color: #38bdf8; display: block; }
+        .stat-label { font-size: 0.95rem; color: #94a3b8; margin-top: 5px; }
+        .why-us { padding: 100px 0; background: var(--bg-light); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 15px; }
+        .section-header p { color: var(--text-light); font-size: 1.1rem; }
+        .why-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .why-list { list-style: none; }
+        .why-list li { display: flex; align-items: flex-start; margin-bottom: 25px; font-size: 1.1rem; opacity: 0; transform: translateX(-30px); transition: all 0.5s ease; }
+        .why-list li.visible { opacity: 1; transform: translateX(0); }
+        .why-list li::before { content: "✓"; color: var(--accent); font-weight: bold; margin-right: 15px; font-size: 1.2rem; min-width: 24px; height: 24px; background: rgba(16,185,129,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .trust-badges { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .badge { background: white; padding: 18px 30px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 10px; transition: all 0.3s ease; opacity: 0; transform: scale(0.8); }
+        .badge.visible { opacity: 1; transform: scale(1); }
+        .badge:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+        .badge-icon { font-size: 1.3rem; }
+        .services { padding: 100px 0; background: white; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 60px; }
+        .service-card { background: var(--bg-light); border-radius: 20px; padding: 40px; border: 1px solid #e2e8f0; transition: all 0.4s ease; transform-style: preserve-3d; perspective: 1000px; opacity: 0; transform: translateY(40px); }
+        .service-card.visible { opacity: 1; transform: translateY(0); }
+        .service-card:hover { transform: translateY(-10px) rotateX(5deg); box-shadow: 0 30px 60px rgba(0,0,0,0.12); border-color: var(--secondary); }
+        .service-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--secondary) 0%, #0284c7 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 25px; transition: transform 0.3s ease; }
+        .service-card:hover .service-icon { transform: scale(1.1) rotate(5deg); }
+        .service-card h3 { font-size: 1.35rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; }
+        .service-card p { color: var(--text-light); margin-bottom: 25px; font-size: 0.95rem; line-height: 1.6; }
+        .service-features { list-style: none; }
+        .service-features li { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.9rem; color: #475569; transition: all 0.3s ease; }
+        .service-features li:hover { color: var(--primary); transform: translateX(5px); }
+        .service-features li::before { content: "→"; color: var(--secondary); font-weight: bold; margin-right: 12px; transition: transform 0.3s ease; }
+        .service-features li:hover::before { transform: translateX(5px); }
+        .process { padding: 100px 0; background: var(--bg-light); position: relative; }
+        .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; position: relative; }
+        .process-grid::before { content: ''; position: absolute; top: 30px; left: 20%; right: 20%; height: 2px; background: linear-gradient(90deg, var(--secondary), var(--accent)); z-index: 0; }
+        .process-step { text-align: center; padding: 50px 30px; background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: relative; z-index: 1; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+        .process-step.visible { opacity: 1; transform: translateY(0); }
+        .process-step:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .step-number { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800; margin: 0 auto 30px; box-shadow: 0 10px 30px rgba(14,165,233,0.3); transition: all 0.3s ease; }
+        .process-step:hover .step-number { transform: scale(1.1); box-shadow: 0 15px 40px rgba(14,165,233,0.4); }
+        .process-step h3 { font-size: 1.35rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 15px; }
+        .process-step p { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, var(--secondary) 0%, #0284c7 100%); color: white; padding: 20px 50px; border-radius: 50px; font-size: 1.15rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(14,165,233,0.3); position: relative; overflow: hidden; border: none; cursor: pointer; }
+        .cta-button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.3); transform: translate(-50%, -50%); transition: width 0.6s ease, height 0.6s ease; }
+        .cta-button:hover::before { width: 300px; height: 300px; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(14,165,233,0.4); }
+        .cta-button.magnetic { transition: transform 0.2s ease; }
+        .cta-section { padding: 120px 0; background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); color: white; text-align: center; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: -50%; left: -50%; right: -50%; bottom: -50%; background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%); animation: rotate 20s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .cta-section .container { position: relative; z-index: 1; }
+        .cta-section h2 { font-size: 3rem; font-weight: 800; margin-bottom: 25px; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .cta-section h2.visible { opacity: 1; transform: translateY(0); }
+        .cta-section p { font-size: 1.2rem; color: #94a3b8; max-width: 600px; margin: 0 auto 40px; opacity: 0; transform: translateY(30px); transition: all 0.6s ease 0.2s; }
+        .cta-section p.visible { opacity: 1; transform: translateY(0); }
+        .cta-section .cta-button { font-size: 1.25rem; padding: 22px 60px; opacity: 0; transform: translateY(30px); transition: all 0.6s ease 0.4s; }
+        .cta-section .cta-button.visible { opacity: 1; transform: translateY(0); }
+        footer { background: var(--primary-dark); color: #64748b; padding: 50px 0; text-align: center; font-size: 0.9rem; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
+        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10001; align-items: center; justify-content: center; }
+        .video-modal.active { display: flex; }
+        .video-modal-content { width: 90%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; position: relative; }
+        .video-modal-close { position: absolute; top: -40px; right: 0; color: white; font-size: 2rem; cursor: pointer; background: none; border: none; }
+        .video-modal-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); color: white; }
+        .video-modal-placeholder h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .video-modal-placeholder p { color: #94a3b8; }
+        @media (max-width: 1024px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .video-container { max-width: 600px; margin: 0 auto; transform: none; }
+            .stats-grid { grid-template-columns: 1fr; max-width: 400px; margin: 40px auto 0; }
+            .process-grid { grid-template-columns: 1fr; }
+            .process-grid::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 60px 0; }
+            .hero-text h1 { font-size: 2rem; }
+            .hero-text .tagline { font-size: 1rem; }
+            .section-header h2 { font-size: 1.75rem; }
+            .why-content { grid-template-columns: 1fr; gap: 40px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .cta-section h2 { font-size: 2rem; }
+            .circular-progress { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+            .circular-progress .percentage { font-size: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="circular-progress" id="circularProgress" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg width="50" height="50"><circle class="bg" cx="25" cy="25" r="20"></circle><circle class="progress" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle></svg>
+        <span class="percentage" id="progressPercentage">0%</span>
+    </div>
+    <div class="particles-container" id="particles"></div>
+    <canvas id="confetti-canvas"></canvas>
+    <div class="video-modal" id="videoModal" onclick="closeVideoModal(event)">
+        <div class="video-modal-content">
+            <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+            <div class="video-modal-placeholder"><h3>🎥 Video Coming Soon</h3><p>See how Dialogix Virtual Chatbots work for your business</p></div>
+        </div>
+    </div>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Dialogix Virtual Chatbots</h1>
+                    <p class="tagline">AI-Powered Chatbots That Capture Leads 24/7, Answer Questions Instantly, and Book Appointments While You Sleep</p>
+                    <div class="hero-cta"><a href="#book-call" class="cta-button magnetic" onclick="triggerConfetti(event)">Book Your Free Discovery Call</a></div>
+                </div>
+                <div class="video-container">
+                    <div class="video-placeholder" onclick="openVideoModal()">
+                        <div class="video-bg-pattern"></div>
+                        <div class="play-button"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                        <span class="video-label">▶ Watch How It Works</span>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><span class="stat-number" data-target="98">0</span><span class="stat-number">%</span><span class="stat-label">Customer Satisfaction</span></div>
+                <div class="stat-card"><span class="stat-number" data-target="24">0</span><span class="stat-number">/7</span><span class="stat-label">Lead Capture</span></div>
+                <div class="stat-card"><span class="stat-number" data-target="500">0</span><span class="stat-number">+</span><span class="stat-label">Conversations Automated</span></div>
+            </div>
+        </div>
+    </section>
+    <section class="why-us">
+        <div class="container">
+            <div class="section-header"><h2>Why Choose Dialogix?</h2><p>Trusted by small business owners who never want to miss another lead</p></div>
+            <div class="why-content">
+                <ul class="why-list">
+                    <li>Never miss a potential customer inquiry, even after hours</li>
+                    <li>Reduce response time from hours to seconds</li>
+                    <li>Qualify leads automatically before they reach you</li>
+                    <li>Integrate seamlessly with your existing CRM and tools</li>
+                    <li>Customize conversations to match your brand voice</li>
+                    <li>Scale without adding more staff to handle inquiries</li>
+                </ul>
+                <div class="trust-badges">
+                    <div class="badge"><span class="badge-icon">🤖</span>AI-Powered Technology</div>
+                    <div class="badge"><span class="badge-icon">🔌</span>Easy Integration</div>
+                    <div class="badge"><span class="badge-icon">💻</span>No Coding Required</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="services">
+        <div class="container">
+            <div class="section-header"><h2>Our Services</h2><p>Everything you need to automate your customer conversations</p></div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🤖</div>
+                    <h3>AI Chatbot Setup</h3>
+                    <p>Custom chatbot designed specifically for your business needs and customer journey.</p>
+                    <ul class="service-features"><li>Custom conversation flows</li><li>Brand voice customization</li><li>Multi-language support</li><li>Smart response training</li></ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Lead Capture Automation</h3>
+                    <p>Never miss a potential customer inquiry with 24/7 automated lead capture.</p>
+                    <ul class="service-features"><li>Instant response to inquiries</li><li>Contact information collection</li><li>Lead qualification scoring</li><li>Automatic follow-up sequences</li></ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📅</div>
+                    <h3>Appointment Scheduling</h3>
+                    <p>Let customers book appointments 24/7 without any human intervention required.</p>
+                    <ul class="service-features"><li>Calendar integration</li><li>Availability management</li><li>Automatic confirmations</li><li>Reminder notifications</li></ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💬</div>
+                    <h3>FAQ Automation</h3>
+                    <p>Answer common questions instantly and free up your time for what matters most.</p>
+                    <ul class="service-features"><li>Intelligent answer matching</li><li>Knowledge base integration</li><li>Continuous learning</li><li>Escalation to human when needed</li></ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔗</div>
+                    <h3>CRM Integration</h3>
+                    <p>Seamlessly connect with your existing tools and workflows for a unified experience.</p>
+                    <ul class="service-features"><li>Zapier integration</li><li>Make.com support</li><li>Native CRM connections</li><li>Webhook automation</li></ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛠️</div>
+                    <h3>Ongoing Support</h3>
+                    <p>Monthly optimization and maintenance to keep your chatbot performing at its best.</p>
+                    <ul class="service-features"><li>Performance analytics</li><li>Monthly optimization</li><li>Conversation improvements</li><li>Dedicated support team</li></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="process">
+        <div class="container">
+            <div class="section-header"><h2>How It Works</h2><p>Getting started is simple and straightforward</p></div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Discovery Call</h3>
+                    <p>We discuss your business needs, current challenges, and how an AI chatbot can help capture more leads and serve your customers better.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Custom Setup</h3>
+                    <p>Our team builds and configures your chatbot, integrating it with your website and existing tools for seamless operation.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Go Live & Optimize</h3>
+                    <p>Your chatbot goes live 24/7, and we continuously improve its performance based on real conversations and feedback.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cta-section" id="book-call">
+        <div class="container">
+            <h2>Ready to Never Miss Another Lead?</h2>
+            <p>Join hundreds of small businesses using Dialogix to capture leads 24/7. $497 setup fee, then just $197/month.</p>
+            <a href="https://calendly.com/dialogix-chatbots/discovery" class="cta-button magnetic" onclick="triggerConfetti(event)">Book Your Free Discovery Call</a>
+        </div>
+    </section>
+    <footer><div class="container"><p>&copy; 2026 Dialogix Virtual Chatbots. All rights reserved.</p></div></footer>
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Progress bar and circular progress
+        const progressBar = document.getElementById('progressBar');
+        const circularProgress = document.querySelector('.circular-progress .progress');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const circumference = 2 * Math.PI * 20;
+
+        function updateProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + '%';
+            const offset = circumference - (progress / 100) * circumference;
+            circularProgress.style.strokeDashoffset = offset;
+            progressPercentage.textContent = Math.round(progress) + '%';
+        }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
+
+        // Intersection Observer for animations
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.querySelector('.stat-number[data-target]')) {
+                        animateCounter(entry.target.querySelector('.stat-number[data-target]'));
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card, .why-list li, .badge, .service-card, .process-step').forEach(el => observer.observe(el));
+        document.querySelectorAll('.cta-section h2, .cta-section p, .cta-section .cta-button').forEach(el => observer.observe(el));
+
+        // Counter animation
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Confetti effect
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        let confettiParticles = [];
+        const colors = ['#0ea5e9', '#10b981', '#6366f1', '#f59e0b', '#ec4899'];
+
+        function triggerConfetti(e) {
+            if (e) e.preventDefault();
+            const rect = e ? e.target.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2};
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            for (let i = 0; i < 100; i++) {
+                confettiParticles.push({
+                    x: originX, y: originY,
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 1) * 15 - 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10,
+                    life: 1
+                });
+            }
+            animateConfetti();
+            setTimeout(() => { if (e && e.target.href) window.location.href = e.target.href; }, 800);
+        }
+
+        function animateConfetti() {
+            if (confettiParticles.length === 0) return;
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles = confettiParticles.filter(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.3;
+                p.rotation += p.rotationSpeed; p.life -= 0.015;
+                if (p.life <= 0) return false;
+                confettiCtx.save();
+                confettiCtx.translate(p.x, p.y);
+                confettiCtx.rotate(p.rotation * Math.PI / 180);
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.globalAlpha = p.life;
+                confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                confettiCtx.restore();
+                return true;
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+
+        window.addEventListener('resize', () => {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        });
+
+        // Video modal
+        function openVideoModal() {
+            document.getElementById('videoModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeVideoModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('videoModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < hero.offsetHeight) {
+                hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
