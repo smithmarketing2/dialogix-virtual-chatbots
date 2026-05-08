@@ -139,6 +139,22 @@
         .cta-section p.visible { opacity: 1; transform: translateY(0); }
         .cta-section .cta-button { font-size: 1.25rem; padding: 22px 60px; opacity: 0; transform: translateY(30px); transition: all 0.6s ease 0.4s; }
         .cta-section .cta-button.visible { opacity: 1; transform: translateY(0); }
+        .pricing-block { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; max-width: 500px; margin: 0 auto 40px; border: 1px solid rgba(255,255,255,0.2); opacity: 0; transform: translateY(30px); transition: all 0.6s ease 0.1s; }
+        .pricing-block.visible { opacity: 1; transform: translateY(0); }
+        .pricing-block:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .pricing-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 20px; }
+        .pricing-setup { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .pricing-setup .currency { font-size: 1.5rem; font-weight: 600; color: #38bdf8; }
+        .pricing-setup .amount { font-size: 3.5rem; font-weight: 800; color: white; line-height: 1; }
+        .pricing-setup .label { font-size: 1rem; color: #94a3b8; }
+        .pricing-monthly { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .pricing-monthly .currency { font-size: 1.2rem; font-weight: 600; color: #10b981; }
+        .pricing-monthly .amount { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; }
+        .pricing-monthly .label { font-size: 0.95rem; color: #94a3b8; }
+        .pricing-features { list-style: none; text-align: left; margin-bottom: 25px; }
+        .pricing-features li { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 0.95rem; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .pricing-features li:last-child { border-bottom: none; }
+        .pricing-features li::before { content: "✓"; color: #10b981; font-weight: bold; font-size: 1.1rem; }
         footer { background: var(--primary-dark); color: #64748b; padding: 50px 0; text-align: center; font-size: 0.9rem; }
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
         .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10001; align-items: center; justify-content: center; }
@@ -163,7 +179,9 @@
             .why-content { grid-template-columns: 1fr; gap: 40px; }
             .services-grid { grid-template-columns: 1fr; }
             .cta-section h2 { font-size: 2rem; }
-
+            .pricing-block { padding: 30px 20px; margin: 0 20px 30px; }
+            .pricing-setup .amount { font-size: 2.5rem; }
+            .pricing-monthly .amount { font-size: 2rem; }
         }
     </style>
 </head>
@@ -289,7 +307,27 @@
     <section class="cta-section" id="book-call">
         <div class="container">
             <h2>Ready to Never Miss Another Lead?</h2>
-            <p>Join hundreds of small businesses using Dialogix to capture leads 24/7. $497 setup fee, then just $197/month.</p>
+            <p>Join hundreds of small businesses using Dialogix to capture leads 24/7.</p>
+            <div class="pricing-block">
+                <div class="pricing-header">Simple, Transparent Pricing</div>
+                <div class="pricing-setup">
+                    <span class="currency">$</span>
+                    <span class="amount">497</span>
+                    <span class="label">one-time setup</span>
+                </div>
+                <div class="pricing-monthly">
+                    <span class="currency">$</span>
+                    <span class="amount">197</span>
+                    <span class="label">/month</span>
+                </div>
+                <ul class="pricing-features">
+                    <li>Custom chatbot built for your business</li>
+                    <li>Unlimited conversations</li>
+                    <li>24/7 lead capture & appointment booking</li>
+                    <li>CRM integration included</li>
+                    <li>Monthly optimization & support</li>
+                </ul>
+            </div>
             <a href="https://calendly.com/dialogix-chatbots/discovery" class="cta-button magnetic" onclick="triggerConfetti(event)">Book Your Free Discovery Call</a>
         </div>
     </section>
@@ -333,7 +371,7 @@
         }, observerOptions);
 
         document.querySelectorAll('.stat-card, .why-list li, .badge, .service-card, .process-step').forEach(el => observer.observe(el));
-        document.querySelectorAll('.cta-section h2, .cta-section p, .cta-section .cta-button').forEach(el => observer.observe(el));
+        document.querySelectorAll('.cta-section h2, .cta-section p, .pricing-block, .cta-section .cta-button').forEach(el => observer.observe(el));
 
         // Counter animation
         function animateCounter(el) {
