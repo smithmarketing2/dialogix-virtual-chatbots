@@ -155,6 +155,17 @@
         .pricing-features li { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 0.95rem; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .pricing-features li:last-child { border-bottom: none; }
         .pricing-features li::before { content: "✓"; color: #10b981; font-weight: bold; font-size: 1.1rem; }
+        .testimonials { padding: 100px 0; background: white; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px; }
+        .testimonial-card { background: var(--bg-light); border-radius: 20px; padding: 35px; border: 1px solid #e2e8f0; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+        .testimonial-card.visible { opacity: 1; transform: translateY(0); }
+        .testimonial-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: var(--secondary); }
+        .testimonial-stars { color: #f59e0b; font-size: 1.2rem; margin-bottom: 20px; letter-spacing: 2px; }
+        .testimonial-text { font-size: 1rem; color: var(--text-dark); line-height: 1.7; margin-bottom: 25px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 15px; }
+        .testimonial-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; }
+        .testimonial-info h4 { font-size: 1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 3px; }
+        .testimonial-info p { font-size: 0.85rem; color: var(--text-light); }
         footer { background: var(--primary-dark); color: #64748b; padding: 50px 0; text-align: center; font-size: 0.9rem; }
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
         .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10001; align-items: center; justify-content: center; }
@@ -182,6 +193,8 @@
             .pricing-block { padding: 30px 20px; margin: 0 20px 30px; }
             .pricing-setup .amount { font-size: 2.5rem; }
             .pricing-monthly .amount { font-size: 2rem; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .testimonial-card { padding: 25px; }
         }
     </style>
 </head>
@@ -282,6 +295,79 @@
             </div>
         </div>
     </section>
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header"><h2>What Our Clients Say</h2><p>Real results from real businesses using Dialogix</p></div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Dialogix completely transformed how we handle customer inquiries. We're capturing leads 24/7 now, and our appointment bookings have increased by 40%. Best investment we've made this year."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SM</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Mitchell</h4>
+                            <p>Owner, Mitchell Roofing Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"I was skeptical at first, but the results speak for themselves. Our chatbot handles 80% of inquiries without us lifting a finger. The setup was seamless and the team was incredibly helpful."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JD</div>
+                        <div class="testimonial-info">
+                            <h4>James Donovan</h4>
+                            <p>Director, Donovan Legal Group</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"As a plumbing company, we get calls at all hours. Dialogix captures those after-hours leads and books appointments while we sleep. We've seen a 60% increase in qualified leads."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MR</div>
+                        <div class="testimonial-info">
+                            <h4>Mike Rodriguez</h4>
+                            <p>Owner, Rodriguez Plumbing</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The CRM integration is flawless. Leads flow directly into our system, and the chatbot qualifies them before we even see them. It's like having a full-time receptionist at a fraction of the cost."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">KL</div>
+                        <div class="testimonial-info">
+                            <h4>Karen Liu</h4>
+                            <p>Broker, Premier Realty</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"We tried other chatbot solutions before, but Dialogix is on another level. The AI actually understands context and provides helpful responses. Our customers love the instant support."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">TW</div>
+                        <div class="testimonial-info">
+                            <h4>Tom Wilson</h4>
+                            <p>CEO, Wilson Auto Care</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The monthly optimization is worth every penny. Our chatbot keeps getting smarter and handling more complex questions. We've reduced our support ticket volume by 50%."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AP</div>
+                        <div class="testimonial-info">
+                            <h4>Amanda Peters</h4>
+                            <p>Founder, Peters Consulting</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="process">
         <div class="container">
             <div class="section-header"><h2>How It Works</h2><p>Getting started is simple and straightforward</p></div>
@@ -370,7 +456,7 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.stat-card, .why-list li, .badge, .service-card, .process-step').forEach(el => observer.observe(el));
+        document.querySelectorAll('.stat-card, .why-list li, .badge, .service-card, .process-step, .testimonial-card').forEach(el => observer.observe(el));
         document.querySelectorAll('.cta-section h2, .cta-section p, .pricing-block, .cta-section .cta-button').forEach(el => observer.observe(el));
 
         // Counter animation
